@@ -37,6 +37,8 @@ Service Discovery: Eureka Server (Spring Boot, port 8761)
 | `PricingService` / `PricingService.Api` | .NET 8 Web / ClassLib | Tính giá sản phẩm bảo hiểm theo tariff + rules (DynamicExpresso); đăng ký Eureka |
 | `PricingService.Test` / `PricingService.IntegrationTest` | xUnit | Kiểm thử đơn vị (tariff, handler, controller) + tích hợp (Testcontainers + Alba) |
 | `PolicyService.Api` | ClassLib | Định nghĩa lệnh/truy vấn/sự kiện vòng đời Policy (CreateOffer, CreatePolicy, PolicyCreated...) |
+| `ProductService` / `ProductService.Api` / `ProductService.Test` | .NET 8 Web / ClassLib / xUnit | Danh mục sản phẩm bảo hiểm; lưu dữ liệu dưới dạng JSON; kiểm thử unit |
+| `PaymentService` / `PaymentService.Api` / `PaymentService.Test` | .NET 8 Web / ClassLib / xUnit | Quản lý tài khoản chính sách và payments; dùng **Marten** (PostgreSQL document DB + event store); nhận sự kiện vòng đời Policy qua RabbitMQ |
 | `ProductService.Api` | ClassLib | Định nghĩa truy vấn danh mục sản phẩm |
 | `PolicySearchService.Api` | ClassLib | Định nghĩa truy vấn tìm kiếm policy trên ElasticSearch |
 | `BlazorWasmClient` | Blazor WASM | Giao diện spa Blazorise cho đại lý |
@@ -55,6 +57,15 @@ Service Discovery: Eureka Server (Spring Boot, port 8761)
 2. **Task #2 — AuthService**: bổ sung đầy đủ code (1 thư mục dịch vụ).
 3. **Task #3 — Chat service**: bổ sung 2 thư mục (`ChatService`, `ChatService.Api`).
 4. **Task #4 — Dashboard service**: bổ sung 3 thư mục (`DashboardService`, `DashboardService.Api`, `DashboardService.Test`).
+
+## Bài thực hành số 7 — Nội dung mới thực hiện
+
+1. **Task #1 — Thêm Marten vào dự án**:
+   - Gói NuGet `Marten 7.19.1` đã được thêm vào `PaymentService` (PostgreSQL làm document database + event store, tuân thủ ACID, LINQ mở rộng); trước đó `PricingService` đã dùng Marten.
+2. **Task #2 — PaymentService**: bổ sung 3 thư mục (`PaymentService`, `PaymentService.Api`, `PaymentService.Test`):
+   - Ghi nhận sự kiện vòng đời policy qua RabbitMQ, tạo/ghi tài khoản chính sách (`MartenPolicyAccountRepository`), phân tích payments đến và gán vào tài khoản phù hợp.
+3. **Task #3 — ProductService**: bổ sung 3 thư mục (`ProductService`, `ProductService.Api`, `ProductService.Test`):
+   - Danh mục sản phẩm (Travel/House/Farm/Car) với các tham số tùy chỉnh, covers và câu hỏi định giá.
 
 ➡️ **Kết quả build toàn solution: 0 Error** (chỉ còn warnings do code mẫu gốc).
 
